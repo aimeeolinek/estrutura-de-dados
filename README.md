@@ -1,0 +1,1 @@
+Duas questões para um trabalho de Estrutura de Dados, da faculdade de Análise e Desenvolvimento de Sistemas.

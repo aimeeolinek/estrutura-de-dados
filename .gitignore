@@ -1,0 +1,24 @@
+.DS_Store
+Thumbs.db
+
+# Testes
+.pytest_cache/
+
+# Cobertura de testes
+.coverage
+htmlcov/
+
+# Arquivos de backup
+*.bak
+*.swp
+
+# Variáveis de ambiente
+.env
+
+# Cache do mypy
+.mypy_cache/
+
+# Cache do Ruff
+.ruff_cache/
+
+exercicio_exemplo.py
