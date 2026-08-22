@@ -3,88 +3,55 @@ class Nodo:
         self.sigla = sigla
         self.nomeEstado = nomeEstado
         self.proximo = None
+        # Aponta para o próximo estado da lista
 
 class TabelaHash:
     def __init__(self):
-        self.tabela = [None, None, None, None, 
-                       None, None, None, None, None, None]
-
-    def ascii_letra(self, letra):
-        if letra == "A":
-            return 65
-        elif letra == "B":
-            return 66
-        elif letra == "C":
-            return 67
-        elif letra == "D":
-            return 68
-        elif letra == "E":
-            return 69
-        elif letra == "F":
-            return 70
-        elif letra == "G":
-            return 71
-        elif letra == "I":
-            return 73
-        elif letra == "J":
-            return 74
-        elif letra == "L":
-            return 76
-        elif letra == "M":
-            return 77
-        elif letra == "N":
-            return 78
-        elif letra == "O":
-            return 79
-        elif letra == "P":
-            return 80
-        elif letra == "R":
-            return 82
-        elif letra == "S":
-            return 83
-        elif letra == "T":
-            return 84
-        
-        # 0: RN -> MS -> GO -> SC -> None
-        # 1: AL -> BA -> RO -> MT -> None
-        # 2: MA -> SE -> AC -> AM -> ES -> PR -> None
-        # 3: PI -> TO -> SP -> None
-        # 4: AO -> RR -> None
-        # 5: AP -> PA -> RS -> None
-        # 6: CE -> PB -> RJ -> None
-        # 7: DF -> None
-        # 8: MG -> None
-        # 9: PE -> None
+        # Cria 10 posições, inicialmente vazias.
+        # Cada posição representa o início (head) de uma lista encadeada.
+        self.tabela = [None] * 10
 
     def funcao_hash(self, sigla):
+        # Padroniza a sigla para letras maiúsculas.
         sigla = sigla.upper()
+        # Por determinação do enunciado, DF sempre ocupa a posição 7.
         if sigla == "DF":
             posicao = 7
         else:
-            char_1 = self.ascii_letra(sigla[0])
-            char_2 = self.ascii_letra(sigla[1])
+            # Obtém os valores ASCII das duas letras da sigla.
+            char_1 = ord(sigla[0])
+            char_2 = ord(sigla[1])
+            # Calcula a posição utilizando a soma dos valores ASCII 
+            # e o resto da divisão por 10
             posicao = (char_1 + char_2) % 10
         return posicao
 
     def inserir(self, sigla, nomeEstado):
+        # Cria um nodo contendo a sigla e o nome do estado.
         novo_nodo = Nodo(sigla, nomeEstado)
+        # A função hash determina em qual posição da tabela o nodo será inserido.
         posicao = self.funcao_hash(sigla)
+
+        # O novo nodo aponta para o atual primeiro elemento da lista.
+        # Isso permite tratar possíveis colisões através do encadeamento.
         novo_nodo.proximo = self.tabela[posicao]
+        # O novo nodo passa a ser o primeiro elemento da lista.
         self.tabela[posicao] = novo_nodo
 
-
     def imprimirTabela(self):
+        # Percorre as 10 posições da tabela hash.
         for posicao in range(10):
+            # O conteúdo da posição representa o primeiro nodo da lista.
             nodo_atual = self.tabela[posicao]
             if nodo_atual is None:
                 print(f"{posicao}: None")
             else:
                 print(f"{posicao}:", end=" ")
+                # Percorre todos os nodos da lista encadeada daquela posição.
                 while nodo_atual is not None:
                     print(f"{nodo_atual.sigla}", end=" -> ")
                     nodo_atual = nodo_atual.proximo
-                print("None") # Quebra de linha após imprimir todos os nodos na posição
-
+                print("None") # Indica o final da lista.
 
 tabela = TabelaHash()
 # Sul
@@ -119,6 +86,6 @@ tabela.inserir("RN", "Rio Grande do Norte")
 tabela.inserir("CE", "Ceará")
 tabela.inserir("MA", "Maranhão")
 tabela.inserir("PI", "Piauí")
-# Estado ficticio
+# Estado fictício
 tabela.inserir("AO", "Aimeê Olinek")
 tabela.imprimirTabela()
